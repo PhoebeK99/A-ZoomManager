@@ -115,34 +115,15 @@ export default {
     this.categories = [
       {name: "Name's Meetings", 
         meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+          {zoomName: "asdf Class", zoomLink: "https://google.com", zoomPass: "183923"},
       ]},
       {name: "School Meetings", 
         meetings: [
           {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-            {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-              {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+            {zoomName: "Enlgihs Class", zoomLink: "https://google.com", zoomPass: "183923"},
+              {zoomName: "Class", zoomLink: "https://google.com", zoomPass: "183923"},
 
       ]},
-       {name: "Life Meetings", 
-        meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-            {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-              {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-              {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-            {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-              {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-              
-      ]},
-       {name: "Study Meetings", 
-        meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-            {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-              {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-              
-      ]},
-
-
     ]
   },
   emits: ["delete-meeting","delete-category","add-meeting", "add-category"],

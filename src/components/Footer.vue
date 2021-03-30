@@ -19,25 +19,23 @@
               x-small
               dark
             >
-              <v-icon class="mdi mdi-information-variant" color="secondary"></span></v-icon>
+              <v-icon class="mdi mdi-exclamation-thick" color="secondary"></v-icon>
             </v-btn>
             
         <v-speed-dial
           class = "ma-auto"
           v-model="fab"
-          :direction="direction"
           >
           <template v-slot:activator>
             <v-btn
               v-model="fab"
               color="primary"
               dark
-
               fab>
                 
-              <v-icon  class="mdi mdi-close-thick" color="black" v-if="fab"></v-icon>
+              <v-icon  class="mdi mdi-close" color="black" v-if="fab"></v-icon>
 
-              <v-icon class="mdi mdi-plus-thick" color="black" v-else></v-icon>
+              <v-icon class="mdi mdi-plus" color="black" v-else></v-icon>
 
             </v-btn>
           </template>
@@ -65,6 +63,7 @@
           >Add Meeting
           </v-btn>
         </v-speed-dial>
+
 <!--DIALOG FOR ADD CATEGORY-->
 <v-dialog
     v-model="categoryDialog"
@@ -73,9 +72,7 @@
     >
      <v-card
      dark>
-        <v-card-title>
-          <span class="headline">Add Category</span>
-        </v-card-title>
+     <form @submit.prevent="submitCategory">
         <v-card-text>
           <v-container>
             <v-row>
@@ -85,8 +82,8 @@
                 md="4"
               >
                 <v-text-field
+                  v-model = "addCategory"
                   label="Category Name"
-                  rules="required"
                   required
                 ></v-text-field>
               </v-col>
@@ -104,6 +101,7 @@
             Cancel
           </v-btn>
           <v-btn
+            type = "submit"
             color="primary"
             text
             @click="categoryDialog = false"
@@ -111,19 +109,19 @@
             Enter
           </v-btn>
         </v-card-actions>
+        </form>
       </v-card>
     </v-dialog>
 <!--DIALOG FOR ADD MEETING -->
     <v-dialog
     v-model="meetingDialog"
     max-width="290"
+    max-height = "400"
     persistent
     >
      <v-card
      dark>
-        <v-card-title>
-          <span class="headline">Add Meeting</span>
-        </v-card-title>
+     
         <v-card-text>
           <v-container>
             <v-row>
@@ -134,7 +132,6 @@
               >
                 <v-text-field
                   label="Meeting Name"
-                  rules="required"
                   required
                 ></v-text-field>
               </v-col>
@@ -146,21 +143,31 @@
               >
                 <v-text-field
                   label="Meeting Link or ID"
-                  rules="required"
                   required
                 ></v-text-field>
               </v-col>
               
               <v-col
+                v-if = "enabled"
                 cols="12"
                 sm="6"
                 md="4"
               >
                 <v-text-field
                   label="Meeting Passcode"
-                  rules="required"
                   required
                 ></v-text-field>
+              </v-col>
+               <v-col
+                cols="12"
+                sm="6"
+                md="4"
+              >
+                <v-switch
+                  v-model="enabled"
+                  color= "primary"
+                  label = "Enable Passcode"
+                ></v-switch>
               </v-col>
             </v-row>
           </v-container>
@@ -192,13 +199,25 @@
 </template>
 
 <script>
-import Modal from "./Modal"
-  export default {
-    data() {
-      return{
-        categoryDialog: false,
-        meetingDialog: false
+
+export default {
+  data() {
+    return{
+      categoryDialog: false,
+      meetingDialog: false,
+      enabled: false,
+      addCategory: "", 
+      submitCategory(e){
+        e.preventDefault()
+        
+        const newCategory = {
+            name: this.addCategory,
+            meetings: []
+        }
+        
+        this.addCategory = ""
       }
     }
   }
+}
 </script>
