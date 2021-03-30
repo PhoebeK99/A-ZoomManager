@@ -19,7 +19,7 @@
               x-small
               dark
             >
-              <v-icon color="secondary">mdi-exclamation-thick</v-icon>
+              <v-icon class="mdi mdi-information-variant" color="secondary"></span></v-icon>
             </v-btn>
             
         <v-speed-dial
@@ -32,15 +32,12 @@
               v-model="fab"
               color="primary"
               dark
+
               fab>
                 
-              <v-icon color="black" v-if="fab">
-                mdi-close
-              </v-icon>
+              <v-icon  class="mdi mdi-close-thick" color="black" v-if="fab"></v-icon>
 
-              <v-icon color="black" v-else>
-                mdi-plus
-              </v-icon>
+              <v-icon class="mdi mdi-plus-thick" color="black" v-else></v-icon>
 
             </v-btn>
           </template>
@@ -54,7 +51,7 @@
             rounded
             color="primary"
             @click.stop="categoryDialog = true"
-            >Add Category
+            > <span color="black"> Add Category </span>
           </v-btn>
 
 <!--ADD MEETING BUTTON IN SPEED DIAL -->
@@ -141,7 +138,6 @@
                   required
                 ></v-text-field>
               </v-col>
-              
 
               <v-col
                 cols="12"
@@ -154,7 +150,6 @@
                   required
                 ></v-text-field>
               </v-col>
-
               
               <v-col
                 cols="12"
@@ -167,7 +162,6 @@
                   required
                 ></v-text-field>
               </v-col>
-              
             </v-row>
           </v-container>
         </v-card-text>
@@ -181,18 +175,16 @@
           >
             Cancel
           </v-btn>
-          
+
           <v-btn
             color="primary"
             text
-            @click="meetingDialog = false"
           >
             Enter
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-
 
       </v-card-title>
     </v-card>

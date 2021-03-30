@@ -27,7 +27,8 @@
           absolute>
 
         <template v-slot:activator>
-           
+                         
+
           <v-list-item-title class="ma-2 font-weight-medium title" color="primary" v-text="category.name"></v-list-item-title>
           <v-spacer></v-spacer>
 
@@ -49,7 +50,7 @@
         <v-spacer></v-spacer>
 
         <v-btn icon>
-          <v-icon @click.stop = "edit({meeting,index})" color="primary">mdi-pencil</v-icon>
+          <v-icon @click.stop = "edit({meeting,index})" light>mdi-pencil</v-icon>
         </v-btn>
 
         </v-list-item>
@@ -116,6 +117,31 @@ export default {
         meetings: [
           {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
       ]},
+      {name: "School Meetings", 
+        meetings: [
+          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+            {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+              {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+
+      ]},
+       {name: "Life Meetings", 
+        meetings: [
+          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+            {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+              {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+              {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+            {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+              {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+              
+      ]},
+       {name: "Study Meetings", 
+        meetings: [
+          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+            {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+              {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
+              
+      ]},
+
 
     ]
   },
@@ -126,6 +152,9 @@ export default {
 
 
 <style scoped>
+html{
+  background-color:black
+}
 v-list{
   height: 500px; 
   overflow-y:auto; 

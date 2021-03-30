@@ -7,14 +7,15 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@mdi/font": "^5.9.55",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vuetify": "^2.4.0"
   },
   "devDependencies": {
+    "@mdi/font": "^5.9.55",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "css-loader": "^5.2.0",
     "sass": "^1.32.0",
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-browser-extension": "~0.25.2",
