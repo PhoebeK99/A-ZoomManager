@@ -116,43 +116,6 @@ export default {
         meetings: [
           {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
       ]},
-       {name: "Name's Meetings", 
-        meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-      ]},
-       {name: "Name's Meetings", 
-        meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-      ]},
-       {name: "Name's Meetings", 
-        meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-      ]},
-       {name: "Name's Meetings", 
-        meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-      ]},
-       {name: "Name's Meetings", 
-        meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-      ]},
-       {name: "Name's Meetings", 
-        meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-      ]},
-       {name: "Name's Meetings", 
-        meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-      ]},
-       {name: "Name's Meetings", 
-        meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-      ]},
-       {name: "Name's Meetings", 
-        meetings: [
-          {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-      ]},
-
 
     ]
   },

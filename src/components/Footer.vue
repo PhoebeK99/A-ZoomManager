@@ -5,11 +5,13 @@
     app
     absolute
   >
+  
     <v-card
       class="flex"
       flat
       tile
     >
+    
       <v-card-title color="#242424">
            <v-btn
               color="#979797"
@@ -42,61 +44,156 @@
 
             </v-btn>
           </template>
-        <v-dialog
-          v-model="dialog"
-          width="500"
-        >
-           <template v-slot:activator="{ on, attrs }">
-          <v-btn
-          v-bind="attrs"
-          v-on="on"
-            dark
-            small
-            rounded
-            color="primary"
-          >Add Category
-          </v-btn>
-           </template>
- <v-card>
-        <v-card-title class="headline">
-          Use Google's location service?
-        </v-card-title>
-        <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="dialog = false"
-          >
-            Disagree
-          </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="dialog = false"
-          >
-            Agree
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-        </v-dialog>
+        
 
-
-
-
-
-
-
+<!--ADD CATEGORY BUTTON IN SPEED DIAL -->
 
           <v-btn
             dark
             small
             rounded
             color="primary"
+            @click.stop="categoryDialog = true"
+            >Add Category
+          </v-btn>
+
+<!--ADD MEETING BUTTON IN SPEED DIAL -->
+
+          <v-btn
+            dark
+            small
+            rounded
+            color="primary"
+            @click.stop="meetingDialog = true"
           >Add Meeting
           </v-btn>
         </v-speed-dial>
+<!--DIALOG FOR ADD CATEGORY-->
+<v-dialog
+    v-model="categoryDialog"
+    max-width="290"
+    persistent
+    >
+     <v-card
+     dark>
+        <v-card-title>
+          <span class="headline">Add Category</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+                sm="6"
+                md="4"
+              >
+                <v-text-field
+                  label="Category Name"
+                  rules="required"
+                  required
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+           <v-btn
+            color="primary"
+            text
+            @click="categoryDialog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="primary"
+            text
+            @click="categoryDialog = false"
+          >
+            Enter
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+<!--DIALOG FOR ADD MEETING -->
+    <v-dialog
+    v-model="meetingDialog"
+    max-width="290"
+    persistent
+    >
+     <v-card
+     dark>
+        <v-card-title>
+          <span class="headline">Add Meeting</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+                sm="6"
+                md="4"
+              >
+                <v-text-field
+                  label="Meeting Name"
+                  rules="required"
+                  required
+                ></v-text-field>
+              </v-col>
+              
+
+              <v-col
+                cols="12"
+                sm="6"
+                md="4"
+              >
+                <v-text-field
+                  label="Meeting Link or ID"
+                  rules="required"
+                  required
+                ></v-text-field>
+              </v-col>
+
+              
+              <v-col
+                cols="12"
+                sm="6"
+                md="4"
+              >
+                <v-text-field
+                  label="Meeting Passcode"
+                  rules="required"
+                  required
+                ></v-text-field>
+              </v-col>
+              
+            </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+           <v-btn
+            color="primary"
+            text
+            @click="meetingDialog = false"
+          >
+            Cancel
+          </v-btn>
+          
+          <v-btn
+            color="primary"
+            text
+            @click="meetingDialog = false"
+          >
+            Enter
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
       </v-card-title>
     </v-card>
   </v-footer>
@@ -105,16 +202,11 @@
 <script>
 import Modal from "./Modal"
   export default {
-    data: () => ({
-      components:{
-        Modal
-      },
-      icons: [
-        'mdi-facebook',
-        'mdi-twitter',
-        'mdi-linkedin',
-        'mdi-instagram',
-      ],
-    }),
+    data() {
+      return{
+        categoryDialog: false,
+        meetingDialog: false
+      }
+    }
   }
 </script>
