@@ -44,8 +44,8 @@
 <!--ADD CATEGORY BUTTON IN SPEED DIAL -->
 
           <v-btn
-            dark
             small
+            dark
             rounded
             color="primary"
             @click.stop="categoryDialog = true"
@@ -72,7 +72,9 @@
     >
      <v-card
      dark>
-     <form @submit.prevent="submitCategory">
+     <form
+         @submit.prevent="submitCategory"
+         autocomplete="off">
         <v-card-text>
           <v-container>
             <v-row>
@@ -82,6 +84,7 @@
                 md="4"
               >
                 <v-text-field
+                
                   v-model = "addCategory"
                   label="Category Name"
                   required
@@ -103,8 +106,9 @@
           <v-btn
             type = "submit"
             color="primary"
-            text
+            :disabled = "!addCategory"
             @click="categoryDialog = false"
+            text
           >
             Enter
           </v-btn>
@@ -202,18 +206,17 @@
 
 export default {
   data() {
-    return{
+    return {
       categoryDialog: false,
       meetingDialog: false,
-      enabled: false,
-      addCategory: "", 
+      addCategory:null,
       submitCategory(e){
-        e.preventDefault()
-        
+        e.preventDefault()   
         const newCategory = {
             name: this.addCategory,
             meetings: []
         }
+        this.$emit('add-category', newCategory)
         
         this.addCategory = ""
       }

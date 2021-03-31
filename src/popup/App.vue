@@ -27,7 +27,6 @@
           absolute>
 
         <template v-slot:activator>
-                         
 
           <v-list-item-title class="ma-2 font-weight-medium title" color="primary" v-text="category.name"></v-list-item-title>
           <v-spacer></v-spacer>
@@ -56,7 +55,7 @@
         </v-list-item>
         </v-list-group>
       </v-list>
-    <Footer/>
+    <Footer @add-category = "pushCategory" />
     </v-card>
   </v-main>
 </v-app>
@@ -96,8 +95,8 @@ export default {
       this.categories[index].meetings = [...this.categories[index].meetings, x]
     },
     //was called through navbar.vue, and pushed in x, x was an object with two elements. Name, and meetings[]
-    pushCategory(x){
-      this.categories = [...this.categories, x]
+    pushCategory(categoryObj){
+      this.categories = [...this.categories, categoryObj]
     },
     addMeeting(index){
       console.log("test")
@@ -133,9 +132,6 @@ export default {
 
 
 <style scoped>
-html{
-  background-color:black
-}
 v-list{
   height: 500px; 
   overflow-y:auto; 
