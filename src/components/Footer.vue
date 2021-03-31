@@ -14,6 +14,7 @@
     
       <v-card-title color="#242424">
            <v-btn
+              @click.stop = "infoDialog = true"
               color="#979797"
               fab
               x-small
@@ -198,17 +199,53 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+      <v-dialog
+        v-model = "infoDialog"
+        max-width="290"
+        dark
+      >
+      <v-card>
+        <v-card-title class="headline">
+         Information
+        </v-card-title>
 
+        <v-card-text>
+This application was developed by Relixr! To contact us, please email relixrteam@gmail.com. Thank you!
+
+              <v-switch
+                  v-model="enabled"
+                  color= "primary"
+                  label = "Enable Dark Mode"
+                ></v-switch>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="primary"
+            text
+            @click="infoDialog = false"
+          >
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
       </v-card-title>
     </v-card>
   </v-footer>
 </template>
 
 <script>
+import InfoModal from "./InfoModal"
 
 export default {
+  components: {
+    InfoModal
+  },
   data() {
     return {
+     infoDialog: false,
       categoryDialog: false,
       meetingDialog: false,
       addCategory:null,
