@@ -48,6 +48,7 @@
             dark
             rounded
             color="primary"
+            class="black--text"
             @click.stop="categoryDialog = true"
             > <span color="black"> Add Category </span>
           </v-btn>
@@ -59,6 +60,7 @@
             small
             rounded
             color="primary"
+            class="black--text"
             @click.stop="meetingDialog = true"
           >Add Meeting
           </v-btn>
@@ -210,6 +212,7 @@ export default {
       categoryDialog: false,
       meetingDialog: false,
       addCategory:null,
+      enabled: false,
       submitCategory(e){
         e.preventDefault()   
         const newCategory = {

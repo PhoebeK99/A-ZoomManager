@@ -63,16 +63,10 @@
 </template>
 
 <script>
-import Header from "../components/Header"
-import Categories from "../components/Categories"
-import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 export default {
   name: 'App',
   components: {
-    Header,
-    Categories,
-    Navbar,
     Footer
   },
   data(){
