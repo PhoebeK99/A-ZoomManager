@@ -3,17 +3,17 @@
   app
  >
   <v-main
-      style="max-height: 500px"
+      style="max-height: 550px"
   >
     <v-card 
-      :height= 500
+      :height= 550
       :width= 400
       app
       color="#121212"
       dark>
 
     <v-list
-      style="max-height: 400px"
+      style="max-height: 450px"
       class="overflow-y-auto"
       color="#121212"
       app> 
@@ -38,8 +38,6 @@
           :key="meeting.zoomName"
           class="ma-3"
           app>
-
-          
         <v-btn 
           outlined
           color="primary"
@@ -55,7 +53,7 @@
         </v-list-item>
         </v-list-group>
       </v-list>
-    <Footer @add-category = "pushCategory" />
+    <Footer :categories="categories" @add-category = "pushCategory" @add-meeting = "pushMeeting"/>
     </v-card>
   </v-main>
 </v-app>
@@ -85,16 +83,31 @@ export default {
       let i = this.categories.indexOf(obj)
       this.categories.splice(i, 1)
     },
-    pushMeeting({x,index}){
-      this.categories[index].meetings = [...this.categories[index].meetings, x]
+    pushMeeting({indexName,meeting}){
+      let index; 
+      //console.log(meeting)
+      //console.log(indexName)
+      for(let i = 0; i<this.categories.length; i++) {
+        if(this.categories[i].name == indexName) {
+          // __FOUND is set to the index of the element
+          index = i;
+          break;
+        }
+      }
+      this.categories[index].meetings = [...this.categories[index].meetings,meeting]
     },
     //was called through navbar.vue, and pushed in x, x was an object with two elements. Name, and meetings[]
     pushCategory(categoryObj){
       this.categories = [...this.categories, categoryObj]
     },
     addMeeting(index){
-      console.log("test")
       let x = {}; 
+      if (this.categories.find(x => x.name === newCategory.name)) {
+        console.log('Category exists!!!')
+        return;
+      }
+
+      console.log("category does not exist")
       // Need to ask all this information before adding. 
       x.zoomName = prompt("Enter zoom meetings"); 
       x.zoomLink = prompt("Enter zoom link"); 
@@ -113,9 +126,8 @@ export default {
       {name: "School Meetings", 
         meetings: [
           {zoomName: "Math Class", zoomLink: "https://google.com", zoomPass: "183923"},
-            {zoomName: "Enlgihs Class", zoomLink: "https://google.com", zoomPass: "183923"},
-              {zoomName: "Class", zoomLink: "https://google.com", zoomPass: "183923"},
-
+          {zoomName: "Enlgihs Class", zoomLink: "https://google.com", zoomPass: "183923"},
+          {zoomName: "Class", zoomLink: "https://google.com", zoomPass: "183923"},
       ]},
     ]
   },
