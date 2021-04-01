@@ -209,6 +209,20 @@
                   label = "Enable Passcode"
                 ></v-switch>
               </v-col>
+              <v-col
+                cols="12"
+                sm="6"
+                md="4"
+              >
+                <v-alert
+                v-if = "meetingIDError"
+                dense
+                outlined
+                type="error"
+                >
+                Invalid Meeting ID
+                </v-alert>
+               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
@@ -321,21 +335,27 @@ export default {
         }
       },
 
-      submitMeeting(e) {
-        e.preventDefault()
+      submitMeeting() {
         let indexName =  this.categorySelect; 
-        
-        const newMeeting = {
-            zoomName: this.addMeetingName, 
-            zoomLink: this.addMeetingID,
-            zoomPass: this.addMeetingPasscode
+        console.log(this.addMeetingID.length)
+        this.meetingIDError = false;
+        if (this.addMeetingID.length === 11) {
+          const newMeeting = {
+          zoomName: this.addMeetingName, 
+          zoomLink: this.addMeetingID,
+          zoomPass: this.addMeetingPasscode
+          }
+          this.$emit('add-meeting', {indexName: indexName, meeting: newMeeting})
+          this.addMeetingName = ""
+          this.addMeetingID = ""
+          this.addMeetingPasscode = ""
+          this.meetingDialog = false
+          this.meetingIDError = false;
         }
-
-        this.$emit('add-meeting', {indexName: indexName, meeting: newMeeting})
-        this.addMeetingName = ""
-        this.addMeetingID = ""
-        this.addMeetingPasscode = ""
-        this.meetingDialog = false
+        else {
+          this.meetingIDError = true;
+          console.log("This is not a valid ID")
+        } 
       }
         
     }
