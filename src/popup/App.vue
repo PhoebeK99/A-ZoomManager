@@ -38,7 +38,8 @@
 
               <v-btn icon>
                 <v-icon @click.stop="edit({ meeting, index })" light
-                  >mdi-pencil</v-icon>
+                  >mdi-pencil</v-icon
+                >
               </v-btn>
             </v-list-item>
           </v-list-group>

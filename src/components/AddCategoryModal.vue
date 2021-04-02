@@ -39,12 +39,13 @@ export default {
   name: 'AddCategoryModal',
   props: {
     categoryDialog: Boolean,
-    addCategory: Boolean,
+    //addCategory: Boolean,
     categories: Array,
   },
   data() {
     return {
       categoryExistsError: false,
+      addCategory: null,
 
       submitCategory(e) {
         const newCategory = {
