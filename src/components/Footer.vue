@@ -4,7 +4,7 @@
       <v-card-title color="#242424">
         <InfoModal />
 
-        <v-speed-dial class="ma-auto" v-model="fab">
+        <v-speed-dial class="mx-auto" v-model="fab">
           <template v-slot:activator>
             <v-btn v-model="fab" color="primary" dark fab>
               <v-icon class="mdi mdi-close" color="black" v-if="fab"></v-icon>
@@ -99,9 +99,8 @@
                         label="Enable Passcode"
                       ></v-switch>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col  v-if="meetingIDError" cols="12" sm="6" md="4">
                       <v-alert
-                        v-if="meetingIDError"
                         dense
                         outlined
                         type="error"
@@ -123,6 +122,7 @@
                   Enter
                 </v-btn>
               </v-card-actions>
+              
             </v-card>
           </form>
         </v-dialog>

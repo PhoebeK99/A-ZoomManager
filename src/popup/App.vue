@@ -38,8 +38,7 @@
 
               <v-btn icon>
                 <v-icon @click.stop="edit({ meeting, index })" light
-                  >mdi-pencil</v-icon
-                >
+                  >mdi-pencil</v-icon>
               </v-btn>
             </v-list-item>
           </v-list-group>
@@ -96,21 +95,6 @@ export default {
     //was called through navbar.vue, and pushed in x, x was an object with two elements. Name, and meetings[]
     pushCategory(categoryObj) {
       this.categories = [...this.categories, categoryObj];
-    },
-    addMeeting(index) {
-      let x = {};
-      if (this.categories.find((x) => x.name === newCategory.name)) {
-        console.log('Category exists!!!');
-        return;
-      }
-
-      console.log('category does not exist');
-      // Need to ask all this information before adding.
-      x.zoomName = prompt('Enter zoom meetings');
-      x.zoomLink = prompt('Enter zoom link');
-      x.zoomPass = prompt('Enter zoom pass');
-      // Add to meetings in specific category at the index passed in to this method.
-      this.categories[index].meetings = [...this.categories[index].meetings, x];
     },
   },
   // This is the array for all the links.
