@@ -37,49 +37,13 @@
         </v-speed-dial>
 
         <!--DIALOG FOR ADD CATEGORY-->
-        <v-dialog v-model="categoryDialog" max-width="320" persistent>
-          <v-card dark>
-            <form @submit.prevent="submitCategory" autocomplete="off">
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="addCategory"
-                        label="Category Name"
-                        required
-                      ></v-text-field>
-                    </v-col>
-                    <v-col class="pt-1 mt-1" cols="12" sm="6" md="4">
-                      <v-alert
-                        v-if="categoryExistsError"
-                        dense
-                        outlined
-                        type="error"
-                      >
-                        Category exists
-                      </v-alert>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="categoryDialog = false">
-                  Cancel
-                </v-btn>
-                <v-btn
-                  type="submit"
-                  color="primary"
-                  :disabled="!addCategory"
-                  text
-                >
-                  Enter
-                </v-btn>
-              </v-card-actions>
-            </form>
-          </v-card>
-        </v-dialog>
+        <AddCategoryModal
+          :categoryDialog="categoryDialog"
+          :addCategory="addCategory"
+          :categories="categories"
+          @close-add-cat-modal="categoryDialog = false"
+          @add-category="submitCategory"
+        />
 
         <!--DIALOG FOR ADD MEETING -->
         <v-dialog v-model="meetingDialog" max-width="320" persistent>
@@ -169,17 +133,18 @@
 
 <script>
 import InfoModal from './InfoModal';
+import AddCategoryModal from './AddCategoryModal';
 
 export default {
   components: {
     InfoModal,
+    AddCategoryModal,
   },
   props: {
     categories: Array,
   },
   data() {
     return {
-      categoryExistsError: false,
       categoryID: 0,
       categoryDialog: null,
       meetingDialog: false,
@@ -189,32 +154,6 @@ export default {
       addCategory: null,
       categorySelect: null,
       passwordEnabled: false,
-
-      submitCategory(e) {
-        const newCategory = {
-          name: this.addCategory,
-          meetings: [],
-        };
-
-        for (let i = 0; i < this.categories.length; i++) {
-          if (this.categories[i].name == this.addCategory) {
-            console.log('Category exists');
-            this.categoryExistsError = true;
-            break;
-          } else {
-            this.categoryExistsError = false;
-          }
-        }
-
-        if (!this.categoryExistsError) {
-          this.$emit('add-category', newCategory);
-          this.addCategory = '';
-          this.categoryExistsError = false;
-          this.categoryDialog = false;
-        } else {
-          this.addCategory = '';
-        }
-      },
 
       submitMeeting() {
         let indexName = this.categorySelect;
@@ -241,6 +180,11 @@ export default {
         }
       },
     };
+  },
+  methods: {
+    submitCategory(categoryObj) {
+      this.$emit('add-category', categoryObj);
+    },
   },
 };
 </script>
