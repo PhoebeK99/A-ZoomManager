@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="meetingDialog" max-width="320" persistent>
+  <v-dialog v-model="editMeetingDialog" max-width="320" persistent>
     <form @submit.prevent="submitMeeting" autocomplete="off">
       <v-card dark>
         <v-card-text>
@@ -10,8 +10,7 @@
                   class="pt-1 mt-1"
                   v-model="addMeetingName"
                   label="Meeting Name"
-                  clearable
-                  :rules="[rules.required]"
+                  required
                 ></v-text-field>
               </v-col>
 
@@ -19,27 +18,23 @@
                 <v-text-field
                   v-model="addMeetingID"
                   class="pt-1 mt-1"
-                  clearable
-                  background-color="light-red"
                   label="Meeting Link or ID"
-                  :rules="[rules.required]"
+                  required
                 ></v-text-field>
               </v-col>
 
               <v-col v-if="passwordEnabled" cols="12" sm="6" md="4">
                 <v-text-field
                   v-model="addMeetingPasscode"
-                  clearable
                   class="pt-1 mt-1"
                   label="Meeting Passcode"
-                  :rules="[rules.required]"
+                  required
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="6" md="4">
                 <v-select
                   v-model="categorySelect"
-                  :rules="[rules.required]"
                   class="pt-1 mt-1"
                   :items="categories"
                   item-text="name"
@@ -57,7 +52,7 @@
                 ></v-switch>
               </v-col>
               <v-col v-if="meetingIDError" cols="12" sm="6" md="4">
-                <v-alert v-if="meetingIDError" dense outlined type="error">
+                <v-alert dense outlined type="error">
                   Invalid Meeting ID
                 </v-alert>
               </v-col>
@@ -71,7 +66,7 @@
             Cancel
           </v-btn>
 
-          <v-btn color="primary" :disabled="!inputReady"  type="submit" text>
+          <v-btn color="primary" type="submit" text>
             Enter
           </v-btn>
         </v-card-actions>
@@ -82,9 +77,9 @@
 
 <script>
 export default {
-  name: 'AddMeetingModal',
+  name: 'EditMeetingDialog',
   props: {
-    meetingDialog: Boolean,
+    editMeetingDialog: Boolean,
     categories: Array,
   },
   data() {
@@ -94,63 +89,26 @@ export default {
       addMeetingPasscode: null,
       categorySelect: null,
       passwordEnabled: false,
-      rules: {
-          required: value => !!value || 'Required.',
-          counter: value =>  value.length >= 9 && value.length <= 11 || 'Must be between 9 and 11 characters', //DOESNT WORK YET
-      },
-      inputReady(){
-        if(this.addMeetingName == "" || this.addMeetingID == "" ||  this.categorySelect == null ){ //DOESN'T WORK YET
-          return false
-        }else{
-          return true
-        }
-      },
-      isValidMeetingID(str) { //WORKS SO FAR BUT NEEDS HELP
-          let isValid = true;
-          if(isNaN(str) || !(str.length == 11 || str.length == 10 || str.length == 9)) {
-            if(!str.startsWith("http")){
-              isValid = false;
-            }else{
-             
-            }
-          }else{
-            this.addMeetingID = "https://zoom.us/j/" + this.addMeetingID
-            alert(this.addMeetingID)
-          }
-          return isValid;
-      },
-      
-      isValidCategorySelect(){
-        let isValid = true 
-        if(this.categorySelect == null){
-          isValid = false
-        }
-        return isValid 
-      },
-      
+
       submitMeeting() {
         let indexName = this.categorySelect;
         console.log(this.addMeetingID.length);
         this.meetingIDError = false;
-        
-          if (this.isValidMeetingID(this.addMeetingID)) {
+        if (this.addMeetingID.length === 11) {
           const newMeeting = {
             zoomName: this.addMeetingName,
             zoomLink: this.addMeetingID,
             zoomPass: this.addMeetingPasscode,
           };
-          
           this.$emit('add-meeting', {
             indexName: indexName,
             meeting: newMeeting,
           });
-        
           this.addMeetingName = '';
           this.addMeetingID = '';
           this.addMeetingPasscode = '';
-          this.categorySelect = null; 
           this.meetingIDError = false;
-          this.$emit('close-add-meeting-modal');
+          this.$emit('close-edit-meeting-modal');
         } else {
           this.meetingIDError = true;
           console.log('This is not a valid ID');
@@ -160,7 +118,7 @@ export default {
   },
   methods: {
     closeModal: function() {
-      this.$emit('close-add-meeting-modal');
+      this.$emit('close-edit-meeting-modal');
     },
   },
 };

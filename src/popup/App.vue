@@ -10,7 +10,7 @@
         >
           <v-list-group
             color="white"
-            v-for="(category, index) in categories"
+            v-for="category in categories"
             :key="category.name"
             v-model="category.active"
             :prepend-icon="category.action"
@@ -23,6 +23,15 @@
                 v-text="category.name"
               ></v-list-item-title>
               <v-spacer></v-spacer>
+                <v-btn icon>
+                <v-icon @click.stop="editMeetingDialog = true" light
+                  >mdi-pencil</v-icon
+                >
+                <EditMeetingModal
+                :editMeetingDialog="editMeetingDialog"
+                @close-edit-meeting-modal="editMeetingDialog = false"
+                />
+              </v-btn>
             </template>
 
             <v-list-item
@@ -31,15 +40,19 @@
               class="ma-3"
               app
             >
-              <v-btn outlined color="primary" v-text="meeting.zoomName">
+         <v-btn outlined color="primary" @click = "openLink(meeting.zoomLink)"  v-text="meeting.zoomName">
               </v-btn>
 
               <v-spacer></v-spacer>
 
               <v-btn icon>
-                <v-icon @click.stop="edit({ meeting, index })" light
+                <v-icon @click.stop="editMeetingDialog = true" light
                   >mdi-pencil</v-icon
                 >
+                <EditMeetingModal
+                :editMeetingDialog="editMeetingDialog"
+                @close-edit-meeting-modal="editMeetingDialog = false"
+                />
               </v-btn>
             </v-list-item>
           </v-list-group>
@@ -56,14 +69,18 @@
 
 <script>
 import Footer from '../components/Footer';
+import EditMeetingModal from "../components/EditMeetingModal";
+
 export default {
   name: 'App',
   components: {
     Footer,
+    EditMeetingModal
   },
   data() {
     return {
       categories: [],
+      editMeetingDialog: false,
     };
   },
   //Thes methods will be used by the h
@@ -88,14 +105,14 @@ export default {
           break;
         }
       }
-      this.categories[index].meetings = [
-        ...this.categories[index].meetings,
-        meeting,
-      ];
+      this.categories[index].meetings = [...this.categories[index].meetings,meeting];
     },
     //was called through navbar.vue, and pushed in x, x was an object with two elements. Name, and meetings[]
     pushCategory(categoryObj) {
       this.categories = [...this.categories, categoryObj];
+    },
+    openLink(zoomLink){
+      window.open(zoomLink);
     },
   },
   // This is the array for all the links.
@@ -105,7 +122,7 @@ export default {
         name: "Name's Meetings",
         meetings: [
           {
-            zoomName: 'asdf Class',
+            zoomName: 'Zoom',
             zoomLink: 'https://google.com',
             zoomPass: '183923',
           },
@@ -116,16 +133,6 @@ export default {
         meetings: [
           {
             zoomName: 'Math Class',
-            zoomLink: 'https://google.com',
-            zoomPass: '183923',
-          },
-          {
-            zoomName: 'Enlgihs Class',
-            zoomLink: 'https://google.com',
-            zoomPass: '183923',
-          },
-          {
-            zoomName: 'Class',
             zoomLink: 'https://google.com',
             zoomPass: '183923',
           },

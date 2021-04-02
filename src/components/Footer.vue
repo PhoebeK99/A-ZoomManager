@@ -74,7 +74,7 @@ export default {
   data() {
     return {
       //categoryID: 0, // not used?
-      categoryDialog: null, // addCatModal
+      categoryDialog: false, // addCatModal
       meetingDialog: false,
       //addMeetingName: null,
       //addMeetingID: null,
@@ -88,12 +88,15 @@ export default {
     submitCategory(categoryObj) {
       this.$emit('add-category', categoryObj);
     },
-    submitMeeting({ indexName, newMeeting }) {
+    submitMeeting({ indexName: index, meeting: newMeeting }) {
       this.$emit('add-meeting', {
-        indexName,
-        newMeeting,
+        indexName: index,
+        meeting: newMeeting,
       });
     },
   },
+  emits:
+    ['add-meeting', 'add-category']
+  ,
 };
 </script>

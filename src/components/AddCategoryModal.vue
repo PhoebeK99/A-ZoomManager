@@ -9,6 +9,7 @@
                 <v-text-field
                   v-model="addCategory"
                   label="Category Name"
+                  clearable
                   required
                 ></v-text-field>
               </v-col>
