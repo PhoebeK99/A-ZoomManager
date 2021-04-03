@@ -1,32 +1,31 @@
 <template>
   <v-app app>
     <v-main style="max-height: 575px">
-      <v-card :height="575" :width="400" app color="#121212" dark>
+      <v-card :height="575" :width="400" app color="#121212" dark shaped>
         <v-list
+          subheader
+          tile
           style="max-height: 500px"
-          class="overflow-y-auto"
           color="#121212"
           app
         >
           <v-list-group
             color="white"
+            no-action
+            sub-group
+            :value = "true"
             v-for="category in categories"
             :key="category.name"
             v-model="category.active"
-            :prepend-icon="category.action"
             absolute
           >
-            <template v-slot:activator>
+            <template v-slot:activator expand>
               <v-list-item-title
-                class="ma-2 font-weight-medium title"
+                class="font-weight-medium title"
                 color="primary"
                 v-text="category.name"
               ></v-list-item-title>
               <v-spacer></v-spacer>
-                <v-btn icon>
-                <v-icon @click.stop="editMeetingDialog = true" light
-                  >mdi-pencil</v-icon
-                >
                 <EditMeetingModal
                 :categories="categories"
                 :editMeetingDialog="editMeetingDialog"
@@ -38,7 +37,7 @@
             <v-list-item
               v-for="meeting in category.meetings"
               :key="meeting.zoomName"
-              class="ma-3"
+              class="ma-1 pl-10"
               app
             >
          <v-btn outlined color="primary" @click = "openLink(meeting.zoomLink)"  v-text="meeting.zoomName">
@@ -47,7 +46,7 @@
               <v-spacer></v-spacer>
 
               <v-btn icon>
-                <v-icon @click.stop="editMeetingDialog = true" light
+                <v-icon @click.stop="editMeetingDialog = true" light color="primary"
                   >mdi-pencil</v-icon
                 >
                 <EditMeetingModal
@@ -116,13 +115,24 @@ export default {
   created() {
     this.categories = [
       {
-        name: "Name's Meetings",
+        name: "My Meetings",
         meetings: [
           {
             zoomName: 'Zoom',
             zoomLink: 'https://google.com',
             zoomPass: '183923',
           },
+            {
+            zoomName: 'Zoom meeting ',
+            zoomLink: 'https://google.com',
+            zoomPass: '183923',
+          },
+            {
+            zoomName: 'Zoom Meeting 3',
+            zoomLink: 'https://google.com',
+            zoomPass: '183923',
+          },
+
         ],
       },
       {
