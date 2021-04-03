@@ -60,7 +60,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-           <v-btn color="primary" text @click="deleteMeeting">
+           <v-btn color="primary" text @click="closeModal">
             Cancel
           </v-btn>
          

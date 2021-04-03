@@ -1,10 +1,7 @@
 <template>
   <v-footer dark padless app absolute>
-    <v-card class="flex" flat tile>
-      <v-card-title color="#242424">
-        <InfoModal />
-
-        <v-speed-dial class="mx-auto" v-model="fab">
+    <v-card class="flex" tile>
+        <v-speed-dial id= "speedDial" class="mx-auto" v-model="fab" absolute elevation="5" style="z-index: 5">
           <template v-slot:activator>
             <v-btn v-model="fab" color="primary" dark fab>
               <v-icon class="mdi mdi-close" color="black" v-if="fab"></v-icon>
@@ -35,7 +32,13 @@
             >Add Meeting
           </v-btn>
         </v-speed-dial>
-
+      <v-bottom-nav id="bottomNav" 
+      absolute
+      horizontal
+      fixed
+      >
+      <v-card-title color="#242424">
+        <InfoModal />
         <!--DIALOG FOR ADD CATEGORY-->
         <!--:addCategory="addCategory"-->
         <AddCategoryModal
@@ -53,8 +56,9 @@
           @add-meeting="submitMeeting"
         />
       </v-card-title>
+        </v-bottom-nav>
     </v-card>
-  </v-footer>
+    </v-footer>
 </template>
 
 <script>
@@ -100,3 +104,14 @@ export default {
   ,
 };
 </script>
+<style scoped>
+#speedDial {
+  transform: translate(-50%, -50%);
+  left: 50%;
+  bottom: 5%;
+}
+#bottomNav{
+  display: flex;
+  justify-content: space-between !important;
+}
+</style>
