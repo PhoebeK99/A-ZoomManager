@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="meetingDialog" max-width="320" persistent>
+  <v-dialog v-model="meetingDialog" max-height = "550" max-width="320" persistent>
     <form @submit.prevent="submitMeeting" autocomplete="off">
       <v-card dark>
         <v-card-text>
@@ -11,7 +11,6 @@
                   v-model="addMeetingName"
                   label="Meeting Name"
                   clearable
-                  :rules="[rules.required]"
                 ></v-text-field>
               </v-col>
 
@@ -22,24 +21,21 @@
                   clearable
                   background-color="light-red"
                   label="Meeting Link or ID"
-                  :rules="[rules.required]"
                 ></v-text-field>
               </v-col>
 
-              <v-col v-if="passwordEnabled" cols="12" sm="6" md="4">
+              <v-col cols="12" sm="6" md="4">
                 <v-text-field
                   v-model="addMeetingPasscode"
                   clearable
                   class="pt-1 mt-1"
-                  label="Meeting Passcode"
-                  :rules="[rules.required]"
+                  label="Meeting Passcode (optional)"
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="6" md="4">
                 <v-select
                   v-model="categorySelect"
-                  :rules="[rules.required]"
                   class="pt-1 mt-1"
                   :items="categories"
                   item-text="name"
@@ -48,17 +44,9 @@
                   dark
                 ></v-select>
               </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-switch
-                  class="pt-1 mt-1"
-                  v-model="passwordEnabled"
-                  color="primary"
-                  label="Enable Passcode"
-                ></v-switch>
-              </v-col>
-              <v-col v-if="meetingIDError" cols="12" sm="6" md="4">
-                <v-alert v-if="meetingIDError" dense outlined type="error">
-                  Invalid Meeting ID
+              <v-col v-if="inputError" cols="12" sm="6" md="4">
+                <v-alert dense color="primary" type = "error">
+               You forgot something!
                 </v-alert>
               </v-col>
             </v-row>
@@ -71,7 +59,7 @@
             Cancel
           </v-btn>
 
-          <v-btn color="primary" :disabled="!inputReady"  type="submit" text>
+          <v-btn color="primary" type="submit" text>
             Enter
           </v-btn>
         </v-card-actions>
@@ -89,41 +77,40 @@ export default {
   },
   data() {
     return {
-      addMeetingName: null,
-      addMeetingID: null,
+      addMeetingName: "",
+      addMeetingID: "",
       addMeetingPasscode: null,
       categorySelect: null,
       passwordEnabled: false,
-      rules: {
-          required: value => !!value || 'Required.',
-          counter: value =>  value.length >= 9 && value.length <= 11 || 'Must be between 9 and 11 characters', //DOESNT WORK YET
-      },
-      inputReady(){
-        if(this.addMeetingName == "" || this.addMeetingID == "" ||  this.categorySelect == null ){ //DOESN'T WORK YET
-          return false
-        }else{
-          return true
-        }
-      },
-      isValidMeetingID(str) { //WORKS SO FAR BUT NEEDS HELP
+      inputError: false,
+
+      isValidMeetingID(str) {
           let isValid = true;
           if(isNaN(str) || !(str.length == 11 || str.length == 10 || str.length == 9)) {
             if(!str.startsWith("http")){
               isValid = false;
-            }else{
-             
+              this.inputError = true
             }
           }else{
             this.addMeetingID = "https://zoom.us/j/" + this.addMeetingID
-            alert(this.addMeetingID)
           }
           return isValid;
       },
-      
+
+      isMeetingNameValid(str){
+        let isValid = true
+        if(str.length == 0){
+          isValid = false
+          this.inputError = true
+        }
+        return isValid
+      },
+
       isValidCategorySelect(){
         let isValid = true 
         if(this.categorySelect == null){
           isValid = false
+          this.inputError = true
         }
         return isValid 
       },
@@ -131,9 +118,8 @@ export default {
       submitMeeting() {
         let indexName = this.categorySelect;
         console.log(this.addMeetingID.length);
-        this.meetingIDError = false;
         
-          if (this.isValidMeetingID(this.addMeetingID)) {
+          if (this.isValidCategorySelect() && this.isValidMeetingID(this.addMeetingID) && this.isMeetingNameValid(this.addMeetingName)) {
           const newMeeting = {
             zoomName: this.addMeetingName,
             zoomLink: this.addMeetingID,
@@ -148,18 +134,21 @@ export default {
           this.addMeetingName = '';
           this.addMeetingID = '';
           this.addMeetingPasscode = '';
+          this.inputError = false;
           this.categorySelect = null; 
-          this.meetingIDError = false;
           this.$emit('close-add-meeting-modal');
-        } else {
-          this.meetingIDError = true;
-          console.log('This is not a valid ID');
         }
       },
     };
   },
   methods: {
     closeModal: function() {
+      this.addMeetingName = null
+      this.categorySelect = null
+      this.addMeetingPasscode = null
+      this.addMeetingID = ""
+      this.inputError = false
+      this.addMeetingID
       this.$emit('close-add-meeting-modal');
     },
   },

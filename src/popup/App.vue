@@ -1,9 +1,9 @@
 <template>
   <v-app app>
-    <v-main style="max-height: 550px">
-      <v-card :height="550" :width="400" app color="#121212" dark>
+    <v-main style="max-height: 575px">
+      <v-card :height="575" :width="400" app color="#121212" dark>
         <v-list
-          style="max-height: 450px"
+          style="max-height: 500px"
           class="overflow-y-auto"
           color="#121212"
           app
@@ -28,6 +28,7 @@
                   >mdi-pencil</v-icon
                 >
                 <EditMeetingModal
+                :categories="categories"
                 :editMeetingDialog="editMeetingDialog"
                 @close-edit-meeting-modal="editMeetingDialog = false"
                 />
@@ -50,6 +51,7 @@
                   >mdi-pencil</v-icon
                 >
                 <EditMeetingModal
+                :categories="categories"
                 :editMeetingDialog="editMeetingDialog"
                 @close-edit-meeting-modal="editMeetingDialog = false"
                 />
@@ -83,7 +85,6 @@ export default {
       editMeetingDialog: false,
     };
   },
-  //Thes methods will be used by the h
   methods: {
     editMeeting({ meeting, index }) {
       console.log('Needs functionality');
@@ -96,18 +97,14 @@ export default {
     },
     pushMeeting({ indexName, meeting }) {
       let index;
-      //console.log(meeting)
-      //console.log(indexName)
       for (let i = 0; i < this.categories.length; i++) {
         if (this.categories[i].name == indexName) {
-          // __FOUND is set to the index of the element
           index = i;
           break;
         }
       }
       this.categories[index].meetings = [...this.categories[index].meetings,meeting];
     },
-    //was called through navbar.vue, and pushed in x, x was an object with two elements. Name, and meetings[]
     pushCategory(categoryObj) {
       this.categories = [...this.categories, categoryObj];
     },
