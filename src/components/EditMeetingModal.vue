@@ -6,6 +6,7 @@
           <v-container>
             <v-row>
               <v-col cols="12" sm="6" md="4">
+
                 <v-text-field
                   class="pt-1 mt-1"
                   v-model="addMeetingName"
@@ -43,11 +44,7 @@
                   dark
                 ></v-select>
               </v-col>
-                   <v-col cols="12" sm="6" md="4">
-                <v-btn dense color="primary" text @click="deleteMeeting">
-            Delete Meeting
-          </v-btn>
-              </v-col>
+                 
 
               <v-col v-if="inputError" cols="12" sm="6" md="4">
                 <v-alert dense color="primary" type = "error">
@@ -59,11 +56,19 @@
         </v-card-text>
 
         <v-card-actions>
+
           <v-spacer></v-spacer>
+
+             <v-btn absolute left fab small dense color="primary" text @click="deleteMeeting">
+           <v-icon  class="mdi mdi-delete"></v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
            <v-btn color="primary" text @click="closeModal">
             Cancel
           </v-btn>
-         
 
           <v-btn color="primary" type="submit" text>
             Enter
@@ -79,6 +84,8 @@ export default {
   name: 'EditMeetingDialog',
   props: {
     editMeetingDialog: Boolean,
+    catIndex: Number, 
+    meetingIndex: Number, 
     categories: Array,
   },
   data() {
@@ -149,12 +156,7 @@ export default {
   },
   methods: {
     closeModal: function() {
-      this.addMeetingName = null
-      this.categorySelect = null
-      this.addMeetingPasscode = null
-      this.addMeetingID = ""
       this.inputError = false
-      this.addMeetingID
       this.$emit('close-edit-meeting-modal');
     },
   },

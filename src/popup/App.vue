@@ -10,51 +10,47 @@
           app
         >
           <v-list-group
+            expand
             color="white"
             no-action
             sub-group
             :value = "true"
-            v-for="category in categories"
+            v-for="(category,catIndex) in categories"
             :key="category.name"
             v-model="category.active"
             absolute
           >
-            <template v-slot:activator expand>
+            <template v-slot:activator>
               <v-list-item-title
                 class="font-weight-medium title"
                 color="primary"
                 v-text="category.name"
               ></v-list-item-title>
               <v-spacer></v-spacer>
-                <EditMeetingModal
-                :categories="categories"
-                :editMeetingDialog="editMeetingDialog"
-                @close-edit-meeting-modal="editMeetingDialog = false"
-                />
-              </v-btn>
             </template>
 
             <v-list-item
-              v-for="meeting in category.meetings"
+              v-for="(meeting,meetingIndex) in category.meetings"
               :key="meeting.zoomName"
               class="ma-1 pl-10"
-              app
+              app 
             >
-         <v-btn outlined color="primary" @click = "openLink(meeting.zoomLink)"  v-text="meeting.zoomName">
-              </v-btn>
+          <v-btn outlined color="primary" @click = "openLink(meeting.zoomLink)"  v-text="meeting.zoomName">
+            </v-btn>
 
               <v-spacer></v-spacer>
 
               <v-btn icon>
                 <v-icon @click.stop="editMeetingDialog = true" light color="primary"
-                  >mdi-pencil</v-icon
-                >
-                <EditMeetingModal
+                  >mdi-pencil</v-icon>
+              </v-btn>
+               <EditMeetingModal
+                :meetingIndex = "meetingIndex"
+                :catIndex = "catIndex"
                 :categories="categories"
                 :editMeetingDialog="editMeetingDialog"
                 @close-edit-meeting-modal="editMeetingDialog = false"
                 />
-              </v-btn>
             </v-list-item>
           </v-list-group>
         </v-list>
