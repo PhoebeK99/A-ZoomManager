@@ -3,7 +3,7 @@
     <v-card class="flex" tile>
         <v-speed-dial id= "speedDial" class="mx-auto" v-model="fab" absolute elevation="5" style="z-index: 5">
           <template v-slot:activator>
-            <v-btn v-model="fab" color="primary" dark fab>
+            <v-btn  color="primary" dark fab>
               <v-icon class="mdi mdi-close" color="black" v-if="fab"></v-icon>
               <v-icon class="mdi mdi-plus" color="black" v-else></v-icon>
             </v-btn>
@@ -107,6 +107,8 @@ export default {
 <style scoped>
 #speedDial {
   transform: translate(-50%, -50%);
+  border:6px solid rgb(18, 18, 18); 
+  border-radius: 100%;
   left: 50%;
   bottom: 5%;
 }

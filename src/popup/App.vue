@@ -5,6 +5,7 @@
         <v-list subheader tile style="max-height: 500px" color="#121212" app>
           <v-list-group
             expand
+            prepend-icon=""
             color="white"
             no-action
             sub-group
@@ -14,6 +15,9 @@
             v-model="category.active"
             absolute
           >
+          <template v-slot:appendIcon>
+            <v-icon class="mdi mdi-chevron-down"></v-icon>
+          </template>
             <template v-slot:activator>
               <v-list-item-title
                 class="font-weight-medium title"
@@ -22,7 +26,6 @@
               ></v-list-item-title>
               <v-spacer></v-spacer>
             </template>
-
             <v-list-item
               v-for="(meeting, meetingIndex) in category.meetings"
               :key="meeting.zoomName"
@@ -38,23 +41,24 @@
               </v-btn>
 
               <v-spacer></v-spacer>
-
-              <EditMeetingButton
-                :catIndex="catIndex"
-                :meetIndex="meetingIndex"
-                @open-edit-meeting-dialog="openEditMeetingDialog"
-              />
+            <v-btn icon>
+                <v-icon @click.stop="updateIndex(catIndex, meetingIndex)" light color="primary"
+                  >mdi-pencil</v-icon
+                >
+              </v-btn>
             </v-list-item>
           </v-list-group>
         </v-list>
+        
         <Footer
           :categories="categories"
           @add-category="pushCategory"
           @add-meeting="pushMeeting"
         />
+
         <EditMeetingModal
-          :meetingIndex="this.meetIndexGlob"
-          :catIndex="this.catIndexGlob"
+          :meetingIndex="meetIndexGlob"
+          :catIndex="catIndexGlob"
           :categories="categories"
           :editMeetingDialog="editMeetingDialog"
           @close-edit-meeting-modal="editMeetingDialog = false"
@@ -67,26 +71,22 @@
 <script>
 import Footer from '../components/Footer';
 import EditMeetingModal from '../components/EditMeetingModal';
-import EditMeetingButton from '../components/EditMeetingButton';
 export default {
   name: 'App',
   components: {
     Footer,
     EditMeetingModal,
-    EditMeetingButton,
   },
   data() {
     return {
       categories: [],
-      editMeetingDialog: false,
-      catIndexGlob: 0,
+      catIndexGlob: 0, 
       meetIndexGlob: 0,
+      editMeetingDialog: false,
     };
   },
   methods: {
-    openEditMeetingDialog({ catIndex, meetIndex }) {
-      console.log(catIndex);
-      console.log('test');
+    updateIndex(catIndex, meetIndex){
       this.catIndexGlob = catIndex;
       this.meetIndexGlob = meetIndex;
       this.editMeetingDialog = true;

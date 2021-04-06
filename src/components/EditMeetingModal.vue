@@ -5,7 +5,7 @@
     max-width="320"
     persistent
   >
-    <form @submit.prevent="submitMeeting" autocomplete="off">
+    <form  @submit.prevent="submitMeeting" autocomplete="off">
       <v-card dark>
         <v-card-text>
           <v-container>
@@ -13,46 +13,38 @@
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
                   class="pt-1 mt-1"
-                  v-model="addMeetingName"
                   label="Meeting Name"
-                  v-text="
-                    this.categories[this.catIndex].meetings[this.meetingIndex]
-                      .zoomName
-                  "
+                  ref="zoomName"
+                  v-model="addMeetingName"
                   clearable
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  v-model="addMeetingID"
                   class="pt-1 mt-1"
                   clearable
+                  ref="zoomLink"
                   label="Meeting Link or ID"
-                  v-text="
-                    this.categories[this.catIndex].meetings[this.meetingIndex]
-                      .zoomLink
-                  "
+                  v-model="addMeetingID"
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  v-model="addMeetingPasscode"
                   clearable
+                  ref="passRef"
                   class="pt-1 mt-1"
                   label="Meeting Passcode (optional)"
-                  v-text="
-                    this.categories[this.catIndex].meetings[this.meetingIndex]
-                      .zoomPass
-                  "
+                  v-model="addMeetingPasscode"
                 ></v-text-field>
               </v-col>
 
               <v-col cols="12" sm="6" md="4">
                 <v-select
-                  v-model="categorySelect"
+                  v-model="this.categories[this.catIndex].name"
                   class="pt-1 mt-1"
+                  ref="categorySelect"
                   :items="categories"
                   item-text="name"
                   label="Category"
@@ -81,14 +73,9 @@
             dense
             color="primary"
             text
-            @click="deleteMeeting"
           >
             <v-icon class="mdi mdi-delete"></v-icon>
           </v-btn>
-          <v-spacer></v-spacer>
-          <v-spacer></v-spacer>
-          <v-spacer></v-spacer>
-          <v-spacer></v-spacer>
           <v-btn color="primary" text @click="closeModal">
             Cancel
           </v-btn>
@@ -111,21 +98,24 @@ export default {
     meetingIndex: Number,
     categories: Array,
   },
-  data() {
-    return {
-      addMeetingName: '',
-      addMeetingID: '',
-      addMeetingPasscode: null,
-      categorySelect: null,
-      passwordEnabled: false,
-      inputError: false,
-
-      isValidMeetingID(str) {
+  data(){
+    return{
+      addMeetingName: null,
+      addMeetingID: null,
+      addMeetingName: null
+    }
+  },
+  mounted() {
+    this.setDefault()
+  },
+  methods: {
+    closeModal: function() {
+      this.inputError = false;
+      this.$emit('close-edit-meeting-modal');
+    },
+        isValidMeetingID(str) {
         let isValid = true;
-        if (
-          isNaN(str) ||
-          !(str.length == 11 || str.length == 10 || str.length == 9)
-        ) {
+        if (isNaN(str) ||!(str.length == 11 || str.length == 10 || str.length == 9)) {
           if (!str.startsWith('http')) {
             isValid = false;
             this.inputError = true;
@@ -156,13 +146,8 @@ export default {
 
       submitMeeting() {
         let indexName = this.categorySelect;
-        console.log(this.addMeetingID.length);
 
-        if (
-          this.isValidCategorySelect() &&
-          this.isValidMeetingID(this.addMeetingID) &&
-          this.isMeetingNameValid(this.addMeetingName)
-        ) {
+        if (this.isValidCategorySelect() && this.isValidMeetingID(this.addMeetingID) && this.isMeetingNameValid(this.addMeetingName)) {
           const newMeeting = {
             zoomName: this.addMeetingName,
             zoomLink: this.addMeetingID,
@@ -173,7 +158,6 @@ export default {
             indexName: indexName,
             meeting: newMeeting,
           });
-
           this.addMeetingName = '';
           this.addMeetingID = '';
           this.addMeetingPasscode = '';
@@ -182,13 +166,19 @@ export default {
           this.$emit('close-add-meeting-modal');
         }
       },
-    };
+      setDefault(){
+        this.addMeetingName = this.categories[this.catIndex].meetings[this.meetingIndex].zoomName
+        this.addMeetingID = this.categories[this.catIndex].meetings[this.meetingIndex].zoomLink
+        this.addMeetingPasscode = this.categories[this.catIndex].meetings[this.meetingIndex].zoomPass
+      }
   },
-  methods: {
-    closeModal: function() {
-      this.inputError = false;
-      this.$emit('close-edit-meeting-modal');
+  watch:{
+    meetingIndex(){
+      this.setDefault()
     },
-  },
+    catIndex(){
+      this.setDefault()
+    }
+  }, 
 };
 </script>
