@@ -13,7 +13,6 @@
           This application was developed by Relixr! Contact email:
           relixrteam@gmail.com
           <v-switch
-            v-model="passwordEnabled"
             color="primary"
             label="Enable Dark Mode"
           ></v-switch>

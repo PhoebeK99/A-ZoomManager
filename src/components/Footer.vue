@@ -77,15 +77,9 @@ export default {
   },
   data() {
     return {
-      //categoryID: 0, // not used?
-      categoryDialog: false, // addCatModal
+      categoryDialog: false, 
       meetingDialog: false,
-      //addMeetingName: null,
-      //addMeetingID: null,
-      //addMeetingPasscode: null,
-      //addCategory: null, // addCatModal
-      //categorySelect: null,
-      //passwordEnabled: false,
+      fab: false
     };
   },
   methods: {

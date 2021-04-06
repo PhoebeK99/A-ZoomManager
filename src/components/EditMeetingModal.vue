@@ -42,9 +42,8 @@
 
               <v-col cols="12" sm="6" md="4">
                 <v-select
-                  v-model="this.categories[this.catIndex].name"
+                  v-model="categorySelect"
                   class="pt-1 mt-1"
-                  ref="categorySelect"
                   :items="categories"
                   item-text="name"
                   label="Category"
@@ -72,9 +71,10 @@
             small
             dense
             color="primary"
+            @click="deleteMeeting"
             text
           >
-            <v-icon class="mdi mdi-delete"></v-icon>
+            <v-icon  class="mdi mdi-delete"></v-icon>
           </v-btn>
           <v-btn color="primary" text @click="closeModal">
             Cancel
@@ -102,7 +102,9 @@ export default {
     return{
       addMeetingName: null,
       addMeetingID: null,
-      addMeetingName: null
+      addMeetingPasscode: null,
+      categorySelect:null,
+      inputError: false
     }
   },
   mounted() {
@@ -148,28 +150,30 @@ export default {
         let indexName = this.categorySelect;
 
         if (this.isValidCategorySelect() && this.isValidMeetingID(this.addMeetingID) && this.isMeetingNameValid(this.addMeetingName)) {
-          const newMeeting = {
+          const editedMeeting = {
             zoomName: this.addMeetingName,
             zoomLink: this.addMeetingID,
             zoomPass: this.addMeetingPasscode,
           };
 
-          this.$emit('add-meeting', {
-            indexName: indexName,
-            meeting: newMeeting,
+          this.$emit('edit-meeting', {
+            catIndex: this.catIndex,
+            meetingIndex: this.meetingIndex,
+            editedMeeting: editedMeeting,
           });
-          this.addMeetingName = '';
-          this.addMeetingID = '';
-          this.addMeetingPasscode = '';
-          this.inputError = false;
-          this.categorySelect = null;
-          this.$emit('close-add-meeting-modal');
+          this.$emit('close-edit-meeting-modal');
         }
       },
+      deleteMeeting(){
+        this.$emit('delete-meeting', {catIndex: this.catIndex, meetingIndex: this.meetingIndex});
+        this.$emit('close-edit-meeting-modal');
+      },
+
       setDefault(){
         this.addMeetingName = this.categories[this.catIndex].meetings[this.meetingIndex].zoomName
         this.addMeetingID = this.categories[this.catIndex].meetings[this.meetingIndex].zoomLink
         this.addMeetingPasscode = this.categories[this.catIndex].meetings[this.meetingIndex].zoomPass
+        this.categorySelect = this.categories[this.catIndex].name
       }
   },
   watch:{

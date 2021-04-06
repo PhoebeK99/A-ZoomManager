@@ -61,6 +61,8 @@
           :catIndex="catIndexGlob"
           :categories="categories"
           :editMeetingDialog="editMeetingDialog"
+          @edit-meeting="editMeeting"
+          @delete-meeting="deleteMeeting"
           @close-edit-meeting-modal="editMeetingDialog = false"
         />
       </v-card>
@@ -91,14 +93,23 @@ export default {
       this.meetIndexGlob = meetIndex;
       this.editMeetingDialog = true;
     },
-    editMeeting({ meeting, index }) {
-      console.log('Needs functionality');
-      // let i = this.categories[index].meetings.indexOf(meeting)
-      // this.categories[index].meetings.splice(i, 1)
+    editMeeting({ catIndex, meetingIndex, editedMeeting }) {
+      console.log(catIndex);
+      console.log(meetingIndex);
+      console.log(editedMeeting);
+      this.categories[catIndex].meetings[meetingIndex].zoomName = editedMeeting.zoomName
+      this.categories[catIndex].meetings[meetingIndex].zoomPass = editedMeeting.zoomPass
+      this.categories[catIndex].meetings[meetingIndex].zoomLink = editedMeeting.zoomLink
+      //STILL NEED TO FIGURE OUT CATEGORY SELECT.
     },
     deleteCategory(obj) {
       let i = this.categories.indexOf(obj);
       this.categories.splice(i, 1);
+    },
+    deleteMeeting({catIndex,meetingIndex}) {
+      console.log(catIndex)
+      console.log(meetingIndex)
+      this.categories[catIndex].meetings.splice(meetingIndex, 1);
     },
     pushMeeting({ indexName, meeting }) {
       let index;
