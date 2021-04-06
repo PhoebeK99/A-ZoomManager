@@ -3,6 +3,7 @@
     <v-main style="max-height: 575px">
       <v-card :height="575" :width="400" app color="#121212" dark shaped>
         <v-list subheader tile style="max-height: 500px" color="#121212" app>
+
           <v-list-group
             expand
             prepend-icon=""
@@ -83,7 +84,6 @@
           @delete-category="deleteCategory"
           @edit-category="editCategory"
           @close-edit-cat-modal="editCategoryDialog = false" />
-
       </v-card>
     </v-main>
   </v-app>
@@ -93,7 +93,6 @@
 import Footer from '../components/Footer';
 import EditMeetingModal from '../components/EditMeetingModal';
 import EditCategoryModal from '../components/EditCategoryModal';
-
 
 export default {
   name: 'App',
@@ -132,7 +131,7 @@ export default {
     editCategory({catIndex, categoryName}){
         this.categories[catIndex].name = categoryName
     },
-    editMeeting({ catIndex, meetingIndex, editedMeeting }) {
+    editMeeting({catIndex, meetingIndex, editedMeeting}) {
       console.log(catIndex);
       console.log(meetingIndex);
       console.log(editedMeeting);

@@ -5,7 +5,7 @@
     max-width="320"
     persistent
   >
-    <form  @submit.prevent="submitMeeting" autocomplete="off">
+    <form @submit.prevent="submitMeeting" autocomplete="off">
       <v-card dark>
         <v-card-text>
           <v-container>
@@ -14,7 +14,7 @@
                 <v-text-field
                   class="pt-1 mt-1"
                   label="Meeting Name"
-                  ref="zoomName"
+
                   v-model="addMeetingName"
                   clearable
                 ></v-text-field>
@@ -24,7 +24,6 @@
                 <v-text-field
                   class="pt-1 mt-1"
                   clearable
-                  ref="zoomLink"
                   label="Meeting Link or ID"
                   v-model="addMeetingID"
                 ></v-text-field>
@@ -33,7 +32,6 @@
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
                   clearable
-                  ref="passRef"
                   class="pt-1 mt-1"
                   label="Meeting Passcode (optional)"
                   v-model="addMeetingPasscode"
@@ -71,7 +69,7 @@
             small
             dense
             color="primary"
-            @click="deleteMeeting"
+            @click="confirmDeleteDialog = true"
             text
           >
             <v-icon  class="mdi mdi-delete"></v-icon>
@@ -85,13 +83,22 @@
           </v-btn>
         </v-card-actions>
       </v-card>
+      <ConfirmDelete
+      :confirmDeleteDialog="confirmDeleteDialog"
+      @deny-delete="confirmDeleteDialog = false"
+      @confirm-delete="deleteMeeting" />
     </form>
   </v-dialog>
 </template>
 
 <script>
+import ConfirmDelete from './ConfirmDelete'
+
 export default {
   name: 'EditMeetingDialog',
+  components: {
+    ConfirmDelete,
+  },
   props: {
     editMeetingDialog: Boolean,
     catIndex: Number,
@@ -104,7 +111,8 @@ export default {
       addMeetingID: null,
       addMeetingPasscode: null,
       categorySelect:null,
-      inputError: false
+      inputError: false,
+      confirmDeleteDialog: false,
     }
   },
   mounted() {
@@ -165,6 +173,7 @@ export default {
         }
       },
       deleteMeeting(){
+        this.confirmDeleteDialog = false;
         this.$emit('delete-meeting', {catIndex: this.catIndex, meetingIndex: this.meetingIndex});
         this.$emit('close-edit-meeting-modal');
       },

@@ -13,7 +13,7 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col class="pt-1 mt-1" cols="12" sm="6" md="4">
+              <v-col class="ptd-1 mt-1" cols="12" sm="6" md="4">
                 <v-alert v-if="categoryExistsError"  dense color="primary" type="error">
                   Category exists
                 </v-alert>
@@ -29,7 +29,7 @@
             small
             dense
             color="primary"
-            @click="deleteCategory"
+            @click="confirmDeleteDialog = true"
             text
           >
             <v-icon  class="mdi mdi-delete"></v-icon>
@@ -44,12 +44,21 @@
         </v-card-actions>
       </form>
     </v-card>
+    <ConfirmDelete 
+    :confirmDeleteDialog="confirmDeleteDialog" 
+    @deny-delete="confirmDeleteDialog = false"
+    @confirm-delete="deleteCategory" />
   </v-dialog>
 </template>
 
 <script>
+import ConfirmDelete from './ConfirmDelete'
+
 export default {
   name: 'EditCategoryModal',
+  components: {
+    ConfirmDelete,
+  },
   props: {
     editCategoryDialog: Boolean,
     catIndex: Number, 
@@ -60,6 +69,7 @@ export default {
       categoryExistsError: false,
       categoryName: null,
       originalCategoryName: null,
+      confirmDeleteDialog: false,
     };
   },
 mounted() {
@@ -67,8 +77,9 @@ mounted() {
   },
   methods: {
     deleteCategory(){
-        
-      this.$emit('delete-category', this.catIndex)
+      this.confirmDeleteDialog = false;
+      this.$emit('delete-category', this.catIndex);
+      this.$emit('close-edit-cat-modal');
       console.log("Works")
     },
       editCategory(e) {
