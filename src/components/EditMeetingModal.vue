@@ -14,7 +14,6 @@
                 <v-text-field
                   class="pt-1 mt-1"
                   label="Meeting Name"
-
                   v-model="addMeetingName"
                   clearable
                 ></v-text-field>
@@ -113,6 +112,7 @@ export default {
       categorySelect:null,
       inputError: false,
       confirmDeleteDialog: false,
+      originalCatIndex: null,
     }
   },
   mounted() {
@@ -154,6 +154,14 @@ export default {
         return isValid;
       },
 
+      checkCategoryChange() {
+        if(this.categorySelect == this.categories[this.this.originalCatIndex].name){
+
+        }else{
+
+        } 
+      },
+
       submitMeeting() {
         let indexName = this.categorySelect;
 
@@ -183,6 +191,7 @@ export default {
         this.addMeetingID = this.categories[this.catIndex].meetings[this.meetingIndex].zoomLink
         this.addMeetingPasscode = this.categories[this.catIndex].meetings[this.meetingIndex].zoomPass
         this.categorySelect = this.categories[this.catIndex].name
+        this.originalCatIndex = this.catIndex
       }
   },
   watch:{
