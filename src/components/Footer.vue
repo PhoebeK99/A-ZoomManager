@@ -55,6 +55,11 @@
           @close-add-meeting-modal="meetingDialog = false"
           @add-meeting="submitMeeting"
         />
+
+        <v-btn absolute right @click.stop="toggleEditCategory" color="#979797" fab x-small dark>
+      <v-icon class="mdi mdi-pencil" color="secondary"></v-icon>
+    </v-btn>
+
       </v-card-title>
         </v-bottom-nav>
     </v-card>
@@ -79,10 +84,15 @@ export default {
     return {
       categoryDialog: false, 
       meetingDialog: false,
+      editCategoryTog: false, 
       fab: false
     };
   },
   methods: {
+    toggleEditCategory(){
+      this.editCategoryTog = !this.editCategoryTog
+      this.$emit('edit-category-toggle', this.editCategoryTog)
+    }, 
     submitCategory(categoryObj) {
       this.$emit('add-category', categoryObj);
     },

@@ -15,23 +15,31 @@
             v-model="category.active"
             absolute
           >
+
           <template v-slot:appendIcon>
             <v-icon class="mdi mdi-chevron-down"></v-icon>
           </template>
+          
             <template v-slot:activator>
               <v-list-item-title
                 class="font-weight-medium title"
                 color="primary"
                 v-text="category.name"
               ></v-list-item-title>
+              
+              <!--opens edit category modal-->
+              <v-btn @click.stop="editCategoryDialogOpen(catIndex)" v-if="togEditCategory" icon><v-icon class="mdi mdi-pencil"></v-icon></v-btn>
               <v-spacer></v-spacer>
+            
             </template>
+            
             <v-list-item
               v-for="(meeting, meetingIndex) in category.meetings"
               :key="meeting.zoomName"
               class="ma-1 pl-10"
               app
             >
+            
               <v-btn
                 outlined
                 color="primary"
@@ -41,6 +49,7 @@
               </v-btn>
 
               <v-spacer></v-spacer>
+              
             <v-btn icon>
                 <v-icon @click.stop="updateIndex(catIndex, meetingIndex)" light color="primary"
                   >mdi-pencil</v-icon
@@ -53,6 +62,7 @@
         <Footer
           :categories="categories"
           @add-category="pushCategory"
+          @edit-category-toggle="toggleEditCategory"
           @add-meeting="pushMeeting"
         />
 
@@ -65,6 +75,15 @@
           @delete-meeting="deleteMeeting"
           @close-edit-meeting-modal="editMeetingDialog = false"
         />
+
+        <EditCategoryModal 
+          :editCategoryDialog="editCategoryDialog" 
+          :catIndex="catIndexGlob"
+          :categories="categories"
+          @delete-category="deleteCategory"
+          @edit-category="editCategory"
+          @close-edit-cat-modal="editCategoryDialog = false" />
+
       </v-card>
     </v-main>
   </v-app>
@@ -73,11 +92,15 @@
 <script>
 import Footer from '../components/Footer';
 import EditMeetingModal from '../components/EditMeetingModal';
+import EditCategoryModal from '../components/EditCategoryModal';
+
+
 export default {
   name: 'App',
   components: {
     Footer,
     EditMeetingModal,
+    EditCategoryModal,
   },
   data() {
     return {
@@ -85,13 +108,29 @@ export default {
       catIndexGlob: 0, 
       meetIndexGlob: 0,
       editMeetingDialog: false,
+      togEditCategory: false,
+      editCategoryDialog: false,
     };
   },
   methods: {
+    editCategoryDialogOpen(catIndex){
+      this.editCategoryDialog = true;
+      this.catIndexGlob = catIndex;
+    },
+    toggleEditCategory(editCategoryTog){
+      this.togEditCategory = editCategoryTog
+      console.log(this.togEditCategory)
+    },
     updateIndex(catIndex, meetIndex){
       this.catIndexGlob = catIndex;
       this.meetIndexGlob = meetIndex;
       this.editMeetingDialog = true;
+    },
+    deleteCategory(catIndex){
+      this.categories.splice(catIndex, 1)
+    },
+    editCategory({catIndex, categoryName}){
+        this.categories[catIndex].name = categoryName
     },
     editMeeting({ catIndex, meetingIndex, editedMeeting }) {
       console.log(catIndex);
@@ -102,16 +141,12 @@ export default {
       this.categories[catIndex].meetings[meetingIndex].zoomLink = editedMeeting.zoomLink
       //STILL NEED TO FIGURE OUT CATEGORY SELECT.
     },
-    deleteCategory(obj) {
-      let i = this.categories.indexOf(obj);
-      this.categories.splice(i, 1);
-    },
     deleteMeeting({catIndex,meetingIndex}) {
       console.log(catIndex)
       console.log(meetingIndex)
       this.categories[catIndex].meetings.splice(meetingIndex, 1);
     },
-    pushMeeting({ indexName, meeting }) {
+    pushMeeting({indexName, meeting}) {
       let index;
       for (let i = 0; i < this.categories.length; i++) {
         if (this.categories[i].name == indexName) {
@@ -119,10 +154,7 @@ export default {
           break;
         }
       }
-      this.categories[index].meetings = [
-        ...this.categories[index].meetings,
-        meeting,
-      ];
+      this.categories[index].meetings = [...this.categories[index].meetings,meeting];
     },
     pushCategory(categoryObj) {
       this.categories = [...this.categories, categoryObj];
