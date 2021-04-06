@@ -5,7 +5,7 @@
     max-width="320"
     persistent
   >
-    <form @submit.prevent="submitMeeting" autocomplete="off">
+    <form @submit.prevent="checkCategoryChange" autocomplete="off">
       <v-card dark>
         <v-card-text>
           <v-container>
@@ -51,7 +51,7 @@
 
               <v-col v-if="inputError" cols="12" sm="6" md="4">
                 <v-alert dense color="primary" type="error">
-                  You forgot something!
+                  Something's wrong!
                 </v-alert>
               </v-col>
             </v-row>
@@ -71,7 +71,7 @@
             @click="confirmDeleteDialog = true"
             text
           >
-            <v-icon  class="mdi mdi-delete"></v-icon>
+            <v-icon class="mdi mdi-delete"></v-icon>
           </v-btn>
           <v-btn color="primary" text @click="closeModal">
             Cancel
@@ -83,15 +83,16 @@
         </v-card-actions>
       </v-card>
       <ConfirmDelete
-      :confirmDeleteDialog="confirmDeleteDialog"
-      @deny-delete="confirmDeleteDialog = false"
-      @confirm-delete="deleteMeeting" />
+        :confirmDeleteDialog="confirmDeleteDialog"
+        @deny-delete="confirmDeleteDialog = false"
+        @confirm-delete="deleteMeeting"
+      />
     </form>
   </v-dialog>
 </template>
 
 <script>
-import ConfirmDelete from './ConfirmDelete'
+import ConfirmDelete from './ConfirmDelete';
 
 export default {
   name: 'EditMeetingDialog',
@@ -104,103 +105,145 @@ export default {
     meetingIndex: Number,
     categories: Array,
   },
-  data(){
-    return{
+  data() {
+    return {
       addMeetingName: null,
       addMeetingID: null,
       addMeetingPasscode: null,
-      categorySelect:null,
+      categorySelect: null,
       inputError: false,
       confirmDeleteDialog: false,
       originalCatIndex: null,
-    }
+    };
   },
   mounted() {
-    this.setDefault()
+    this.setDefault();
   },
   methods: {
     closeModal: function() {
       this.inputError = false;
       this.$emit('close-edit-meeting-modal');
     },
-        isValidMeetingID(str) {
-        let isValid = true;
-        if (isNaN(str) ||!(str.length == 11 || str.length == 10 || str.length == 9)) {
-          if (!str.startsWith('http')) {
-            isValid = false;
-            this.inputError = true;
-          }
-        } else {
-          this.addMeetingID = 'https://zoom.us/j/' + this.addMeetingID;
-        }
-        return isValid;
-      },
-
-      isMeetingNameValid(str) {
-        let isValid = true;
-        if (str.length == 0) {
+    isValidMeetingID(str) {
+      let isValid = true;
+      if (
+        isNaN(str) ||
+        !(str.length == 11 || str.length == 10 || str.length == 9)
+      ) {
+        if (!str.startsWith('http')) {
           isValid = false;
           this.inputError = true;
         }
-        return isValid;
-      },
-
-      isValidCategorySelect() {
-        let isValid = true;
-        if (this.categorySelect == null) {
-          isValid = false;
-          this.inputError = true;
-        }
-        return isValid;
-      },
-
-      checkCategoryChange() {
-        if(this.categorySelect == this.categories[this.this.originalCatIndex].name){
-
-        }else{
-
-        } 
-      },
-
-      submitMeeting() {
-        let indexName = this.categorySelect;
-
-        if (this.isValidCategorySelect() && this.isValidMeetingID(this.addMeetingID) && this.isMeetingNameValid(this.addMeetingName)) {
-          const editedMeeting = {
-            zoomName: this.addMeetingName,
-            zoomLink: this.addMeetingID,
-            zoomPass: this.addMeetingPasscode,
-          };
-
-          this.$emit('edit-meeting', {
-            catIndex: this.catIndex,
-            meetingIndex: this.meetingIndex,
-            editedMeeting: editedMeeting,
-          });
-          this.$emit('close-edit-meeting-modal');
-        }
-      },
-      deleteMeeting(){
-        this.confirmDeleteDialog = false;
-        this.$emit('delete-meeting', {catIndex: this.catIndex, meetingIndex: this.meetingIndex});
-        this.$emit('close-edit-meeting-modal');
-      },
-
-      setDefault(){
-        this.addMeetingName = this.categories[this.catIndex].meetings[this.meetingIndex].zoomName
-        this.addMeetingID = this.categories[this.catIndex].meetings[this.meetingIndex].zoomLink
-        this.addMeetingPasscode = this.categories[this.catIndex].meetings[this.meetingIndex].zoomPass
-        this.categorySelect = this.categories[this.catIndex].name
-        this.originalCatIndex = this.catIndex
+      } else {
+        this.addMeetingID = 'https://zoom.us/j/' + this.addMeetingID;
       }
-  },
-  watch:{
-    meetingIndex(){
-      this.setDefault()
+      return isValid;
     },
-    catIndex(){
-      this.setDefault()
-    }
-  }, 
+
+    isMeetingNameValid(str) {
+      let isValid = true;
+      if (str.length == 0) {
+        isValid = false;
+        this.inputError = true;
+      }
+      return isValid;
+    },
+
+    isValidCategorySelect() {
+      let isValid = true;
+      if (this.categorySelect == null) {
+        isValid = false;
+        this.inputError = true;
+      }
+      return isValid;
+    },
+
+    checkCategoryChange() {
+      if (this.categorySelect == this.categories[this.originalCatIndex].name) {
+        this.submitMeeting();
+      } else {
+        this.submitMeetingNewCat();
+        this.deleteMeeting();
+      }
+    },
+
+    submitMeeting() {
+      let indexName = this.categorySelect;
+
+      if (
+        this.isValidCategorySelect() &&
+        this.isValidMeetingID(this.addMeetingID) &&
+        this.isMeetingNameValid(this.addMeetingName)
+      ) {
+        const editedMeeting = {
+          zoomName: this.addMeetingName,
+          zoomLink: this.addMeetingID,
+          zoomPass: this.addMeetingPasscode,
+        };
+
+        this.$emit('edit-meeting', {
+          catIndex: this.catIndex,
+          meetingIndex: this.meetingIndex,
+          editedMeeting: editedMeeting,
+        });
+        this.inputError = false;
+        this.$emit('close-edit-meeting-modal');
+      }
+    },
+
+    deleteMeeting() {
+      this.confirmDeleteDialog = false;
+      this.$emit('delete-meeting', {
+        catIndex: this.catIndex,
+        meetingIndex: this.meetingIndex,
+      });
+      this.$emit('close-edit-meeting-modal');
+    },
+
+    submitMeetingNewCat() {
+      let indexName = this.categorySelect;
+
+      if (
+        this.isValidCategorySelect() &&
+        this.isValidMeetingID(this.addMeetingID) &&
+        this.isMeetingNameValid(this.addMeetingName)
+      ) {
+        const newMeeting = {
+          zoomName: this.addMeetingName,
+          zoomLink: this.addMeetingID,
+          zoomPass: this.addMeetingPasscode,
+        };
+
+        this.$emit('add-meeting', {
+          indexName: indexName,
+          meeting: newMeeting,
+        });
+        this.inputError = false;
+        this.$emit('close-edit-meeting-modal');
+      }
+    },
+
+    setDefault() {
+      this.addMeetingName = this.categories[this.catIndex].meetings[
+        this.meetingIndex
+      ].zoomName;
+      this.addMeetingID = this.categories[this.catIndex].meetings[
+        this.meetingIndex
+      ].zoomLink;
+      this.addMeetingPasscode = this.categories[this.catIndex].meetings[
+        this.meetingIndex
+      ].zoomPass;
+      this.categorySelect = this.categories[this.catIndex].name;
+      this.originalCatIndex = this.catIndex;
+    },
+  },
+  watch: {
+    meetingIndex() {
+      this.setDefault();
+    },
+    catIndex() {
+      this.setDefault();
+    },
+  },
 };
 </script>

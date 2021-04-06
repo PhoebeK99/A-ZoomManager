@@ -14,7 +14,12 @@
                 ></v-text-field>
               </v-col>
               <v-col class="pt-1 mt-1" cols="12" sm="6" md="4">
-                <v-alert v-if="categoryExistsError"  dense color="primary" type="error">
+                <v-alert
+                  v-if="categoryExistsError"
+                  dense
+                  color="primary"
+                  type="error"
+                >
                   Category exists
                 </v-alert>
               </v-col>

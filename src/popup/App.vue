@@ -3,7 +3,6 @@
     <v-main style="max-height: 575px">
       <v-card :height="575" :width="400" app color="#121212" dark shaped>
         <v-list subheader tile style="max-height: 500px" color="#121212" app>
-
           <v-list-group
             expand
             prepend-icon=""
@@ -16,31 +15,33 @@
             v-model="category.active"
             absolute
           >
+            <template v-slot:appendIcon>
+              <v-icon class="mdi mdi-chevron-down"></v-icon>
+            </template>
 
-          <template v-slot:appendIcon>
-            <v-icon class="mdi mdi-chevron-down"></v-icon>
-          </template>
-          
             <template v-slot:activator>
               <v-list-item-title
                 class="font-weight-medium title"
                 color="primary"
                 v-text="category.name"
               ></v-list-item-title>
-              
+
               <!--opens edit category modal-->
-              <v-btn @click.stop="editCategoryDialogOpen(catIndex)" v-if="togEditCategory" icon><v-icon class="mdi mdi-pencil"></v-icon></v-btn>
+              <v-btn
+                @click.stop="editCategoryDialogOpen(catIndex)"
+                v-if="togEditCategory"
+                icon
+                ><v-icon class="mdi mdi-pencil"></v-icon
+              ></v-btn>
               <v-spacer></v-spacer>
-            
             </template>
-            
+
             <v-list-item
               v-for="(meeting, meetingIndex) in category.meetings"
               :key="meeting.zoomName"
               class="ma-1 pl-10"
               app
             >
-            
               <v-btn
                 outlined
                 color="primary"
@@ -50,16 +51,19 @@
               </v-btn>
 
               <v-spacer></v-spacer>
-              
-            <v-btn icon>
-                <v-icon @click.stop="updateIndex(catIndex, meetingIndex)" light color="primary"
+
+              <v-btn icon>
+                <v-icon
+                  @click.stop="updateIndex(catIndex, meetingIndex)"
+                  light
+                  color="primary"
                   >mdi-pencil</v-icon
                 >
               </v-btn>
             </v-list-item>
           </v-list-group>
         </v-list>
-        
+
         <Footer
           :categories="categories"
           @add-category="pushCategory"
@@ -75,15 +79,17 @@
           @edit-meeting="editMeeting"
           @delete-meeting="deleteMeeting"
           @close-edit-meeting-modal="editMeetingDialog = false"
+          @add-meeting="pushMeeting"
         />
 
-        <EditCategoryModal 
-          :editCategoryDialog="editCategoryDialog" 
+        <EditCategoryModal
+          :editCategoryDialog="editCategoryDialog"
           :catIndex="catIndexGlob"
           :categories="categories"
           @delete-category="deleteCategory"
           @edit-category="editCategory"
-          @close-edit-cat-modal="editCategoryDialog = false" />
+          @close-edit-cat-modal="editCategoryDialog = false"
+        />
       </v-card>
     </v-main>
   </v-app>
@@ -104,7 +110,7 @@ export default {
   data() {
     return {
       categories: [],
-      catIndexGlob: 0, 
+      catIndexGlob: 0,
       meetIndexGlob: 0,
       editMeetingDialog: false,
       togEditCategory: false,
@@ -112,40 +118,43 @@ export default {
     };
   },
   methods: {
-    editCategoryDialogOpen(catIndex){
+    editCategoryDialogOpen(catIndex) {
       this.editCategoryDialog = true;
       this.catIndexGlob = catIndex;
     },
-    toggleEditCategory(editCategoryTog){
-      this.togEditCategory = editCategoryTog
-      console.log(this.togEditCategory)
+    toggleEditCategory(editCategoryTog) {
+      this.togEditCategory = editCategoryTog;
+      console.log(this.togEditCategory);
     },
-    updateIndex(catIndex, meetIndex){
+    updateIndex(catIndex, meetIndex) {
       this.catIndexGlob = catIndex;
       this.meetIndexGlob = meetIndex;
       this.editMeetingDialog = true;
     },
-    deleteCategory(catIndex){
-      this.categories.splice(catIndex, 1)
+    deleteCategory(catIndex) {
+      this.categories.splice(catIndex, 1);
     },
-    editCategory({catIndex, categoryName}){
-        this.categories[catIndex].name = categoryName
+    editCategory({ catIndex, categoryName }) {
+      this.categories[catIndex].name = categoryName;
     },
-    editMeeting({catIndex, meetingIndex, editedMeeting}) {
+    editMeeting({ catIndex, meetingIndex, editedMeeting }) {
       console.log(catIndex);
       console.log(meetingIndex);
       console.log(editedMeeting);
-      this.categories[catIndex].meetings[meetingIndex].zoomName = editedMeeting.zoomName
-      this.categories[catIndex].meetings[meetingIndex].zoomPass = editedMeeting.zoomPass
-      this.categories[catIndex].meetings[meetingIndex].zoomLink = editedMeeting.zoomLink
+      this.categories[catIndex].meetings[meetingIndex].zoomName =
+        editedMeeting.zoomName;
+      this.categories[catIndex].meetings[meetingIndex].zoomPass =
+        editedMeeting.zoomPass;
+      this.categories[catIndex].meetings[meetingIndex].zoomLink =
+        editedMeeting.zoomLink;
       //STILL NEED TO FIGURE OUT CATEGORY SELECT.
     },
-    deleteMeeting({catIndex,meetingIndex}) {
-      console.log(catIndex)
-      console.log(meetingIndex)
+    deleteMeeting({ catIndex, meetingIndex }) {
+      console.log(catIndex);
+      console.log(meetingIndex);
       this.categories[catIndex].meetings.splice(meetingIndex, 1);
     },
-    pushMeeting({indexName, meeting}) {
+    pushMeeting({ indexName, meeting }) {
       let index;
       for (let i = 0; i < this.categories.length; i++) {
         if (this.categories[i].name == indexName) {
@@ -153,7 +162,10 @@ export default {
           break;
         }
       }
-      this.categories[index].meetings = [...this.categories[index].meetings,meeting];
+      this.categories[index].meetings = [
+        ...this.categories[index].meetings,
+        meeting,
+      ];
     },
     pushCategory(categoryObj) {
       this.categories = [...this.categories, categoryObj];

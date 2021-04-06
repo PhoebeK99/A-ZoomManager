@@ -12,10 +12,7 @@
         <v-card-text>
           This application was developed by Relixr! Contact email:
           relixrteam@gmail.com
-          <v-switch
-            color="primary"
-            label="Enable Dark Mode"
-          ></v-switch>
+          <v-switch color="primary" label="Enable Dark Mode"></v-switch>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
