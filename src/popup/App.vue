@@ -45,13 +45,15 @@
               <v-btn
                 outlined
                 color="primary"
-                @click="openLink(meeting.zoomLink)"
+                class = "copy"
+                data-clipboard-text="meeting.zoomPass"
+                @click="openLink(meeting.zoomLink, meeting.zoomPass)"
                 v-text="meeting.zoomName"
               >
               </v-btn>
 
               <v-spacer></v-spacer>
-
+              <input type="text" id="dummy_id">
               <v-btn icon>
                 <v-icon
                   @click.stop="updateIndex(catIndex, meetingIndex)"
@@ -170,8 +172,18 @@ export default {
     pushCategory(categoryObj) {
       this.categories = [...this.categories, categoryObj];
     },
-    openLink(zoomLink) {
-      window.open(zoomLink);
+    openLink(zoomLink,zoomPass) {
+      const el = document.createElement('textarea');
+      let pass = zoomPass
+      el.value = pass;
+      el.setAttribute('readonly', '');
+      el.style.position = 'absolute';
+      el.style.left = '-9999px';
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      //window.open(zoomLink);
     },
   },
   // This is the array for all the links.
@@ -183,7 +195,7 @@ export default {
           {
             zoomName: 'Zoom',
             zoomLink: 'https://google.com/1',
-            zoomPass: '123456',
+            zoomPass: 'Testing',
           },
           {
             zoomName: 'Zoom meeting ',
