@@ -53,7 +53,6 @@
               </v-btn>
 
               <v-spacer></v-spacer>
-              <input type="text" id="dummy_id">
               <v-btn icon>
                 <v-icon
                   @click.stop="updateIndex(catIndex, meetingIndex)"
