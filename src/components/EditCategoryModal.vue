@@ -124,9 +124,10 @@ export default {
     },
   },
   watch: {
-    catIndex() {
-      console.log(this.catIndex);
-      this.setDefault();
+    editCategoryDialog() {
+      if (this.editCategoryDialog == true) {
+        this.setDefault();
+      }
     },
   },
 };

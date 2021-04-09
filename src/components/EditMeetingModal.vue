@@ -238,11 +238,10 @@ export default {
     },
   },
   watch: {
-    meetingIndex() {
-      this.setDefault();
-    },
-    catIndex() {
-      this.setDefault();
+    editMeetingDialog() {
+      if (this.editMeetingDialog == true) {
+        this.setDefault();
+      }
     },
   },
 };

@@ -45,7 +45,7 @@
               <v-btn
                 outlined
                 color="primary"
-                class = "copy"
+                class="copy"
                 data-clipboard-text="meeting.zoomPass"
                 @click="openLink(meeting.zoomLink, meeting.zoomPass)"
                 v-text="meeting.zoomName"
@@ -171,9 +171,9 @@ export default {
     pushCategory(categoryObj) {
       this.categories = [...this.categories, categoryObj];
     },
-    openLink(zoomLink,zoomPass) {
+    openLink(zoomLink, zoomPass) {
       const el = document.createElement('textarea');
-      let pass = zoomPass
+      let pass = zoomPass;
       el.value = pass;
       el.setAttribute('readonly', '');
       el.style.position = 'absolute';
@@ -187,38 +187,7 @@ export default {
   },
   // This is the array for all the links.
   created() {
-    this.categories = [
-      {
-        name: 'My Meetings',
-        meetings: [
-          {
-            zoomName: 'Zoom',
-            zoomLink: 'https://google.com/1',
-            zoomPass: 'Testing',
-          },
-          {
-            zoomName: 'Zoom meeting ',
-            zoomLink: 'https://google.com/2',
-            zoomPass: '678910',
-          },
-          {
-            zoomName: 'Zoom Meeting 3',
-            zoomLink: 'https://google.com/3',
-            zoomPass: '111213',
-          },
-        ],
-      },
-      {
-        name: 'School Meetings',
-        meetings: [
-          {
-            zoomName: 'Math Class',
-            zoomLink: 'https://google.com/4',
-            zoomPass: '183923',
-          },
-        ],
-      },
-    ];
+    this.categories = [];
   },
   emits: [
     'delete-meeting',
