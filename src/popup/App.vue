@@ -45,7 +45,7 @@
               <v-btn
                 outlined
                 color="primary"
-                class="copy"
+                class = "copy"
                 data-clipboard-text="meeting.zoomPass"
                 @click="openLink(meeting.zoomLink, meeting.zoomPass)"
                 v-text="meeting.zoomName"
@@ -91,6 +91,8 @@
           @edit-category="editCategory"
           @close-edit-cat-modal="editCategoryDialog = false"
         />
+
+        <List/>
       </v-card>
     </v-main>
   </v-app>
@@ -171,9 +173,9 @@ export default {
     pushCategory(categoryObj) {
       this.categories = [...this.categories, categoryObj];
     },
-    openLink(zoomLink, zoomPass) {
+    openLink(zoomLink,zoomPass) {
       const el = document.createElement('textarea');
-      let pass = zoomPass;
+      let pass = zoomPass
       el.value = pass;
       el.setAttribute('readonly', '');
       el.style.position = 'absolute';
@@ -185,9 +187,45 @@ export default {
       //window.open(zoomLink);
     },
   },
+    mounted(){
+      console.log('App Mounted');
+        if (localStorage.getItem('categories'))
+            this.categories = JSON.parse(localStorage.getItem('categories'));
+    },
   // This is the array for all the links.
   created() {
-    this.categories = [];
+    this.categories = [
+      {
+        name: 'My Meetings',
+        meetings: [
+          {
+            zoomName: 'Zoom',
+            zoomLink: 'https://google.com/1',
+            zoomPass: 'Testing',
+          },
+          {
+            zoomName: 'Zoom meeting ',
+            zoomLink: 'https://google.com/2',
+            zoomPass: '678910',
+          },
+          {
+            zoomName: 'Zoom Meeting 3',
+            zoomLink: 'https://google.com/3',
+            zoomPass: '111213',
+          },
+        ],
+      },
+      {
+        name: 'School Meetings',
+        meetings: [
+          {
+            zoomName: 'Math Class',
+            zoomLink: 'https://google.com/4',
+            zoomPass: '183923',
+          },
+        ],
+      },
+    ];
   },
   emits: [
     'delete-meeting',
@@ -196,6 +234,16 @@ export default {
     'add-category',
     'open-edit-meeting-dialog',
   ],
+   watch: {
+        categories: {
+            handler() {
+                console.log('Todo Items array changed!');
+                // key and value are the two parameters!
+                localStorage.setItem('categories', JSON.stringify(this.categories));
+            },
+            deep: true,
+        },
+    },
 };
 </script>
 
