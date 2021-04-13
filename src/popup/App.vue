@@ -2,7 +2,7 @@
   <v-app app>
     <v-main style="max-height: 575px">
       <v-card :height="575" :width="400" app color="#121212" dark shaped>
-        <v-list subheader tile style="max-height: 500px" color="#121212" app>
+        <v-list id = "list" subheader tile style="max-height: 500px" color="#121212" app>
           <v-list-group
             expand
             prepend-icon=""
@@ -42,16 +42,22 @@
               class="ma-1 pl-10"
               app
             >
+            <v-tooltip max-width:10 bottom >
+      <template v-slot:activator="{ on, attrs }">
               <v-btn
                 outlined
                 color="primary"
+                v-bind="attrs"
+                v-on="on"
                 class = "copy"
                 data-clipboard-text="meeting.zoomPass"
                 @click="openLink(meeting.zoomLink, meeting.zoomPass)"
                 v-text="meeting.zoomName"
               >
               </v-btn>
-
+      </template>
+              <span>Open link and copy password</span>
+  </v-tooltip>
               <v-spacer></v-spacer>
               <v-btn icon>
                 <v-icon
@@ -92,7 +98,7 @@
           @close-edit-cat-modal="editCategoryDialog = false"
         />
 
-        <List/>
+        <v-list/>
       </v-card>
     </v-main>
   </v-app>
@@ -184,7 +190,7 @@ export default {
       el.select();
       document.execCommand('copy');
       document.body.removeChild(el);
-      //window.open(zoomLink);
+      window.open(zoomLink);
     },
   },
     mounted(){
@@ -194,35 +200,15 @@ export default {
     },
   // This is the array for all the links.
   created() {
-    this.categories = [
+     this.categories = [
       {
         name: 'My Meetings',
         meetings: [
           {
-            zoomName: 'Zoom',
-            zoomLink: 'https://google.com/1',
-            zoomPass: 'Testing',
-          },
-          {
-            zoomName: 'Zoom meeting ',
-            zoomLink: 'https://google.com/2',
-            zoomPass: '678910',
-          },
-          {
-            zoomName: 'Zoom Meeting 3',
-            zoomLink: 'https://google.com/3',
-            zoomPass: '111213',
-          },
-        ],
-      },
-      {
-        name: 'School Meetings',
-        meetings: [
-          {
-            zoomName: 'Math Class',
-            zoomLink: 'https://google.com/4',
-            zoomPass: '183923',
-          },
+            zoomName: 'Example Meeting',
+            zoomLink: 'https://zoom.us/j/123456789',
+            zoomPass: 'copied',
+          }
         ],
       },
     ];
@@ -248,8 +234,26 @@ export default {
 </script>
 
 <style scoped>
-v-list {
-  height: 500px;
+#list{
   overflow-y: auto;
+  height: 500px;
+}
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #BB86FC;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #c9a5f6;
 }
 </style>

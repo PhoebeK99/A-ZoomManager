@@ -10,13 +10,14 @@
         </v-card-title>
 
         <v-card-text>
-          This application was developed by Relixr! Contact email:
-          relixrteam@gmail.com
-          <v-switch color="primary" label="Enable Dark Mode"></v-switch>
+          This application was developed by Aceris! Contact us for feedback:
+          acerisdev@gmail.com
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-
+        <v-btn color="primary" text @click="buyCoffee">
+            BUY US A COFFEE
+          </v-btn>
           <v-btn color="primary" text @click="infoDialog = false">
             Close
           </v-btn>
@@ -33,6 +34,11 @@ export default {
     return {
       infoDialog: false,
     };
+  },
+  methods: {
+    buyCoffee(){
+      window.open("https://www.buymeacoffee.com/aceris")
+    }
   },
 };
 </script>

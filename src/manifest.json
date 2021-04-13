@@ -1,9 +1,10 @@
 {
   "manifest_version": 2,
-  "name": "__MSG_extName__",
+  "name": "A-Zoom Manager",
   "homepage_url": "http://localhost:8080/",
-  "description": "A Vue Browser Extension",
+  "description": "Useful extension to manage zoom meetings",
   "default_locale": "en",
+  "version": 1.0,
   "permissions": [
     "<all_urls>",
     "*://*/*",
@@ -22,10 +23,10 @@
   },
   "browser_action": {
     "default_popup": "popup.html",
-    "default_title": "__MSG_extName__",
+    "default_title": "A-Zoom Manager",
     "default_icon": {
-      "19": "icons/19.png",
-      "38": "icons/38.png"
+      "16": "icons/16.png",
+      "48": "icons/48.png"
     }
   }
 }
