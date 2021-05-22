@@ -1,9 +1,11 @@
 ![Banner Logo](/unnamed.jpg)
 
-# vuetifyzoomscheduler
-
 # Download here:
 https://chrome.google.com/webstore/detail/a-zoom-manager/fbeielocoeimhniadlepcooihbbgaplf/
+
+
+
+
 
 
 
