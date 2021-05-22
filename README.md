@@ -1,3 +1,5 @@
+![Banner Logo](/unnamed.jpg)
+
 # vuetifyzoomscheduler
 
 # Download here:
@@ -23,4 +25,3 @@ npm run build
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-![Book logo](/unnamed.jpg)
